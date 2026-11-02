@@ -262,9 +262,22 @@ class TestCreateTodoSuccess:
         }
 
     def test_minimal_success(self, monkeypatch):
+        monkeypatch.setattr(server, "DEFAULT_DEVICE_ID", "")
         calls = patch_request(monkeypatch)
         server.create_todo("标题")
         assert calls[0]["json"] == {"title": "标题"}
+
+    def test_default_device_binding(self, monkeypatch):
+        monkeypatch.setattr(server, "DEFAULT_DEVICE_ID", "DEV-DEFAULT")
+        calls = patch_request(monkeypatch)
+        server.create_todo("标题")
+        assert calls[0]["json"] == {"title": "标题", "deviceId": "DEV-DEFAULT"}
+
+    def test_explicit_device_overrides_default(self, monkeypatch):
+        monkeypatch.setattr(server, "DEFAULT_DEVICE_ID", "DEV-DEFAULT")
+        calls = patch_request(monkeypatch)
+        server.create_todo("标题", device_id="DEV-EXPLICIT")
+        assert calls[0]["json"] == {"title": "标题", "deviceId": "DEV-EXPLICIT"}
 
 
 class TestUpdateTodoSuccess:

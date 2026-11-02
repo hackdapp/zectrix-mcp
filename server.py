@@ -202,7 +202,7 @@ def create_todo(
     title 必填；dueDate 格式 yyyy-MM-dd；dueTime 格式 HH:mm；
     repeatType: daily/weekly/monthly/yearly/none（weekly 用 repeatWeekday 0-6，yearly 用 repeatMonth 1-12，
     monthly/yearly 用 repeatDay 1-31）；priority: 0普通/1重要/2紧急；
-    deviceId 为空则创建为个人待办（不绑设备）。"""
+    deviceId 未指定时默认绑定 ZECTRIX_DEVICE_ID 配置的设备；两者都未设置则创建为个人待办（不绑设备）。"""
     if priority is not None and priority not in PRIORITIES:
         raise ValueError(f"priority 仅允许 {sorted(PRIORITIES)}，收到: {priority}")
     if repeat_type is not None and repeat_type not in REPEAT_TYPES:
@@ -219,8 +219,9 @@ def create_todo(
     }.items():
         if val is not None:
             body[key] = val
-    if device_id:
-        body["deviceId"] = device_id
+    resolved_device = (device_id or DEFAULT_DEVICE_ID).strip()
+    if resolved_device:
+        body["deviceId"] = resolved_device
     return _out(_request("POST", "/todos", json=body))
 
 
