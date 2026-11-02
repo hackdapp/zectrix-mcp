@@ -1,0 +1,18 @@
+# 密钥与本地环境（勿提交）
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/

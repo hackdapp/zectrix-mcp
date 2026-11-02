@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zectrix-mcp"
+version = "0.1.0"
+description = "ZECTRIX NOTE4 智能墨水屏便签 MCP Server"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.2,<2",
+    "httpx>=0.27.0",
+    "pillow>=10.0",
+]
+
+[project.scripts]
+zectrix-mcp = "server:main"
+
+[tool.setuptools]
+py-modules = ["server"]
